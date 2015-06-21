@@ -19,6 +19,12 @@ public class StartActivity extends Applet implements Runnable, KeyListener {
 	
 	private static Robot robot;
 	
+	static enum GameState {
+		Running, Dead
+	}
+	
+	public static GameState state = GameState.Running;
+	
 	private long i =0;
 	
 	public static Gastly g1,g2;
@@ -194,6 +200,8 @@ public class StartActivity extends Applet implements Runnable, KeyListener {
 	@Override
 	public void run() {
 		
+		if(state == GameState.Running)
+		{
 		
 		//Game loop
 		while(true){
@@ -237,7 +245,13 @@ public class StartActivity extends Applet implements Runnable, KeyListener {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+			
+			if (robot.getCenterY() > 500) {
+				state = GameState.Dead;
+			}
+			
+		}//loop
+	}//if
 		
 	}
 
@@ -256,11 +270,9 @@ public class StartActivity extends Applet implements Runnable, KeyListener {
 			second.fillRect(0, 0, getWidth(), getHeight());
 			second.setColor(getForeground());
 			
-			
 			paint(second);
-			
-		
 			enemy(second);
+		
 		
 			
 			
@@ -272,7 +284,9 @@ public class StartActivity extends Applet implements Runnable, KeyListener {
 		}
 		
 		//Called from update(Graphics)
+		 @Override
 		public void paint(Graphics g){
+			if (state == GameState.Running) {
 			g.drawImage(background, bg1.getBgX(), bg1.getBgY(),this);
 			g.drawImage(background, bg2.getBgX(), bg2.getBgY(),this);
 			paintTiles(g);
@@ -286,29 +300,37 @@ public class StartActivity extends Applet implements Runnable, KeyListener {
 				g.fillRect(p.getX(), p.getY(), 10, 5);
 			}
 			
-			g.drawRect((int)robot.rect.getX(), (int)robot.rect.getY(), (int)robot.rect.getWidth(), (int)robot.rect.getHeight());
+			/*g.drawRect((int)robot.rect.getX(), (int)robot.rect.getY(), (int)robot.rect.getWidth(), (int)robot.rect.getHeight());
 			g.drawRect((int)robot.rect2.getX(), (int)robot.rect2.getY(), (int)robot.rect2.getWidth(), (int)robot.rect2.getHeight());
 			g.drawRect((int)robot.rect3.getX(), (int)robot.rect3.getY(), (int)robot.rect3.getWidth(), (int)robot.rect3.getHeight());
 			g.drawRect((int)robot.rect4.getX(), (int)robot.rect4.getY(), (int)robot.rect4.getWidth(), (int)robot.rect4.getHeight());
 			g.drawRect((int)robot.yellowRed.getX(), (int)robot.yellowRed.getY(), (int)robot.yellowRed.getWidth(), (int)robot.yellowRed.getHeight());
 			g.drawRect((int)robot.footleft.getX(), (int)robot.footleft.getY(), (int)robot.footleft.getWidth(), (int)robot.footleft.getHeight());
-			g.drawRect((int)robot.footright.getX(), (int)robot.footright.getY(), (int)robot.footright.getWidth(), (int)robot.footright.getHeight());
+			g.drawRect((int)robot.footright.getX(), (int)robot.footright.getY(), (int)robot.footright.getWidth(), (int)robot.footright.getHeight());*/
 			
 			
 			g.drawImage(currentSprite, robot.getCenterX()-61,robot.getCenterY()-63, this);
 			
 			
-			
-		}
-		
-		//Called from update(Graphics)
-		public void enemy(Graphics g){
 			g.drawImage(hanim.getImage(),g1.getCenterX()-48, g1.getCenterY()-48,this );
 			g.drawImage(hanim.getImage(),g2.getCenterX()-48, g2.getCenterY()-48,this );
 			
 			g.setFont(font);
 			g.setColor(Color.WHITE);
 			g.drawString(Integer.toString(score), 740, 30);	
+		}else if (state == GameState.Dead) {
+			g.setColor(Color.BLACK);
+			g.fillRect(0, 0, 800, 480);
+			g.setColor(Color.WHITE);
+			g.drawString("Game Over", 360, 240);
+		}
+			
+			
+		}
+		
+		//Called from update(Graphics)
+		public void enemy(Graphics g){
+			
 		}
 
 	

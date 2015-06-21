@@ -8,7 +8,7 @@ public class Projectile {
 	private Rectangle r;
 	
 	public Projectile(int startX, int startY){
-		x=startY;
+		x=startX;
 		y=startY;
 		speedX = 7;
 		visible = true;
@@ -17,15 +17,13 @@ public class Projectile {
 	}
 	
 	public void update(){
-		
 		x += speedX;
-		r.setBounds(x, y, 10, 5);
-		
+		r.setBounds(x, y, 10, 5); //collision rect
 		if(x > 800){
 			visible = false;
 			r = null;
 		}
-        if(x<801){
+        if(x<800){
         	checkCollision();
 		}
 	}
@@ -65,12 +63,24 @@ public class Projectile {
 	private void checkCollision() {
 		if(r.intersects(StartActivity.g1.r)){
 			visible = false;
-			StartActivity.score += 1;
+			
+			if (StartActivity.g1.health > 0) {
+				StartActivity.g1.health -= 1;
+			}
+			if (StartActivity.g1.health == 0) {
+				StartActivity.g1.setCenterX(-100);
+				StartActivity.score += 5;
+			}
 		}
 		if (r.intersects(StartActivity.g2.r)){
 			visible = false;
-			StartActivity.score += 1;
-
+			if (StartActivity.g2.health > 0) {
+				StartActivity.g2.health -= 1;
+			}
+			if (StartActivity.g2.health == 0) {
+				StartActivity.g2.setCenterX(-100);
+				StartActivity.score += 5;
+			}
 
 		}
     }

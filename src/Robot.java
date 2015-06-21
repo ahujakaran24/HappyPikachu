@@ -155,7 +155,7 @@ public class Robot {
 
 	public void shoot(){
 		if(readyToFire){
-		Projectile p  = new Projectile(CenterX-30 , CenterY-40);
+		Projectile p  = new Projectile(getCenterX()+61 , CenterY-25);
 		projectiles.add(p);
 		}
 	}
